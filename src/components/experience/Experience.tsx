@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StarField } from "@/components/experience/StarField";
 import { CursorMagic } from "@/components/experience/CursorMagic";
 import { Fireflies } from "@/components/experience/Fireflies";
@@ -11,16 +11,19 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 /* ----------------------- Intro ----------------------- */
 function Intro({ onDone }: { onDone: () => void }) {
+  const isMobile = useIsMobile();
   const [phase, setPhase] = useState(0);
   const doneRef = useRef(false);
-  const finish = () => {
+  const finish = useCallback(() => {
     if (doneRef.current) return;
     doneRef.current = true;
     onDone();
-  };
+  }, [onDone]);
   // 0 black, 1 star bloom, 2 "For Tiya", 3 second line, 4 signature, 5 fade out
   useEffect(() => {
-    const timeline = [1600, 2600, 3800, 4200, 4600, 3600];
+    const timeline = isMobile
+      ? [900, 1200, 4200, 7600, 4200, 1600]
+      : [1400, 2200, 4600, 7200, 4600, 2200];
     const timers: ReturnType<typeof setTimeout>[] = [];
     let acc = 0;
     timeline.forEach((ms, i) => {
@@ -33,8 +36,7 @@ function Intro({ onDone }: { onDone: () => void }) {
       );
     });
     return () => timers.forEach(clearTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [finish, isMobile]);
 
   return (
     <motion.div
@@ -43,7 +45,7 @@ function Intro({ onDone }: { onDone: () => void }) {
       initial={{ opacity: 1 }}
       animate={{ opacity: phase >= 5 ? 0 : 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 2.4, ease: "easeInOut" }}
+      transition={{ duration: isMobile ? 1.1 : 2.4, ease: "easeInOut" }}
     >
       {/* star bloom */}
       {phase >= 1 && <StarField density={380} shooting={false} />}
@@ -65,10 +67,15 @@ function Intro({ onDone }: { onDone: () => void }) {
           {phase === 2 && (
             <motion.h1
               key="fortiya"
-              initial={{ opacity: 0, y: 20, filter: "blur(20px)", letterSpacing: "0.5em" }}
+              initial={{
+                opacity: 0,
+                y: isMobile ? 10 : 20,
+                filter: isMobile ? "blur(6px)" : "blur(20px)",
+                letterSpacing: isMobile ? "0.12em" : "0.5em",
+              }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.05em" }}
-              exit={{ opacity: 0, scale: 1.08, filter: "blur(10px)" }}
-              transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, scale: 1.04, filter: isMobile ? "blur(2px)" : "blur(10px)" }}
+              transition={{ duration: isMobile ? 0.75 : 2.4, ease: [0.22, 1, 0.36, 1] }}
               className="font-script text-7xl text-glow md:text-9xl"
               style={{ color: "#fef3c7" }}
             >
@@ -78,11 +85,15 @@ function Intro({ onDone }: { onDone: () => void }) {
           {phase === 3 && (
             <motion.p
               key="line2"
-              initial={{ opacity: 0, y: 24, filter: "blur(14px)" }}
+              initial={{
+                opacity: 0,
+                y: isMobile ? 10 : 24,
+                filter: isMobile ? "blur(4px)" : "blur(14px)",
+              }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, filter: "blur(10px)" }}
-              transition={{ duration: 2.2 }}
-              className="font-display max-w-2xl text-2xl italic text-white/90 md:text-4xl text-glow-soft"
+              exit={{ opacity: 0, filter: isMobile ? "blur(2px)" : "blur(10px)" }}
+              transition={{ duration: isMobile ? 0.7 : 1.2 }}
+              className="font-display max-w-2xl text-2xl leading-snug italic text-white/90 md:text-4xl text-glow-soft"
             >
               From someone who couldn&rsquo;t let your day end like this.
             </motion.p>
@@ -93,7 +104,7 @@ function Intro({ onDone }: { onDone: () => void }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1.6 }}
+              transition={{ duration: isMobile ? 0.7 : 1.6 }}
               className="flex flex-col items-center gap-3"
             >
               <span className="font-display text-lg tracking-[0.3em] text-white/70">LOVE,</span>
