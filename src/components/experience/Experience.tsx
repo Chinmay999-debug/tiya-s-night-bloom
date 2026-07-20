@@ -107,7 +107,6 @@ function Intro({ onDone }: { onDone: () => void }) {
               transition={{ duration: isMobile ? 0.7 : 1.6 }}
               className="flex flex-col items-center gap-3"
             >
-              <span className="font-display text-lg tracking-[0.3em] text-white/70">LOVE,</span>
               <motion.span
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -206,7 +205,7 @@ function LetterScene() {
             transition={{ duration: isMobile ? 0.8 : 1.6, delay: isMobile ? 0.35 : 2 }}
             className="mt-8 flex flex-col items-end sm:mt-10"
           >
-            <span className="text-sm tracking-[0.3em] text-white/50">WITH LOVE,</span>
+            <span className="text-sm tracking-[0.3em] text-white/50">FROM,</span>
             <span
               className="font-script text-5xl text-glow md:text-6xl"
               style={{ color: "#fde68a" }}
@@ -887,7 +886,7 @@ function Ending({ onReplay }: { onReplay: () => void }) {
         transition={{ duration: isMobile ? 0.8 : 3, delay: isMobile ? 0.75 : 3 }}
         className="mt-6 text-xs tracking-[0.4em] text-white/40"
       >
-        MADE WITH LOVE, BY CHINMAY, FOR TIYA
+        MADE BY CHINMAY, FOR TIYA
       </motion.div>
     </section>
   );

@@ -61,7 +61,7 @@ export class NightMusic {
 
     const master = ctx.createGain();
     master.gain.setValueAtTime(0, ctx.currentTime);
-    master.gain.linearRampToValueAtTime(0.85, ctx.currentTime + 4); // slow fade in
+    master.gain.linearRampToValueAtTime(1.25, ctx.currentTime + 4); // slow fade in
     const compressor = ctx.createDynamicsCompressor();
     compressor.threshold.value = -28;
     compressor.ratio.value = 6;
