@@ -752,6 +752,18 @@ function MoonScene() {
 /* ----------------------- Heart Constellation Final ----------------------- */
 function HeartConstellation() {
   const isMobile = useIsMobile();
+  const starVariants = {
+    hidden: { opacity: 0, scale: 0.2 },
+    visible: (i: number) => ({
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: isMobile ? 0.55 : 0.8,
+        delay: isMobile ? i * 0.006 : i * 0.014,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    }),
+  };
   // heart parametric points
   const pts = useMemo(() => {
     const arr: { x: number; y: number }[] = [];
@@ -790,28 +802,26 @@ function HeartConstellation() {
           THE STARS ARE GATHERING…
         </motion.p>
 
-        <svg
+        <motion.svg
           viewBox="-24 -24 48 44"
           className="pulse-heart h-[260px] w-[260px] md:h-[340px] md:w-[340px]"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.55 }}
         >
           {pts.map((p, i) => (
             <motion.circle
               key={i}
+              custom={i}
               cx={p.x}
               cy={p.y}
               r={0.5}
               fill="#fecaca"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: isMobile ? 0.35 : 0.6,
-                delay: isMobile ? 0.1 + i * 0.01 : 0.4 + i * 0.03,
-              }}
-              style={{ filter: "drop-shadow(0 0 2px #f87171)" }}
+              variants={starVariants}
+              className="heart-star"
             />
           ))}
-        </svg>
+        </motion.svg>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
