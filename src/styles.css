@@ -206,6 +206,22 @@
 @media (max-width: 640px) {
   html {
     scroll-behavior: auto;
+    scroll-padding-top: 0;
+    scroll-snap-type: y mandatory;
+  }
+
+  body {
+    overscroll-behavior-y: contain;
+  }
+
+  .story-scenes > section {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .story-scenes > section:has(.glass-card) {
+    scroll-snap-align: center;
   }
 
   .glass-card {

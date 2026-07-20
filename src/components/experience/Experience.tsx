@@ -211,6 +211,7 @@ function LetterScene() {
 
 /* ----------------------- Constellation TIYA ----------------------- */
 function ConstellationScene() {
+  const isMobile = useIsMobile();
   // Simple stroke paths spelling TIYA
   const paths = [
     // T
@@ -252,7 +253,7 @@ function ConstellationScene() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.6 }}
+          transition={{ duration: isMobile ? 0.6 : 1.6 }}
           className="font-display text-center text-lg italic text-white/70 md:text-xl"
         >
           Look up. The stars remember your name.
@@ -276,7 +277,11 @@ function ConstellationScene() {
                 hidden: { pathLength: 0, opacity: 0 },
                 visible: { pathLength: 1, opacity: 1 },
               }}
-              transition={{ duration: 2.4, delay: 0.6 + i * 0.6, ease: "easeInOut" }}
+              transition={{
+                duration: isMobile ? 0.8 : 2.4,
+                delay: isMobile ? 0.1 + i * 0.12 : 0.6 + i * 0.6,
+                ease: "easeInOut",
+              }}
               style={{ filter: "drop-shadow(0 0 6px #fde68a)" }}
             />
           ))}
@@ -293,12 +298,15 @@ function ConstellationScene() {
               viewport={{ once: true }}
               transition={{
                 opacity: {
-                  duration: 4,
-                  delay: 0.4 + i * 0.08,
-                  repeat: Infinity,
+                  duration: isMobile ? 1.2 : 4,
+                  delay: isMobile ? 0.1 + i * 0.02 : 0.4 + i * 0.08,
+                  repeat: isMobile ? 0 : Infinity,
                   repeatType: "mirror",
                 },
-                scale: { duration: 0.8, delay: 0.4 + i * 0.08 },
+                scale: {
+                  duration: isMobile ? 0.35 : 0.8,
+                  delay: isMobile ? 0.1 + i * 0.02 : 0.4 + i * 0.08,
+                },
               }}
               style={{ filter: "drop-shadow(0 0 4px #fde68a)" }}
             />
@@ -832,6 +840,7 @@ function HeartConstellation() {
 
 /* ----------------------- Ending ----------------------- */
 function Ending({ onReplay }: { onReplay: () => void }) {
+  const isMobile = useIsMobile();
   const lines = [
     "Sleep peacefully.",
     "You are loved.",
@@ -853,7 +862,7 @@ function Ending({ onReplay }: { onReplay: () => void }) {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 2, delay: 2.4 }}
+        transition={{ duration: isMobile ? 0.7 : 2, delay: isMobile ? 0.5 : 2.4 }}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.95 }}
         className="glass-card mt-4 rounded-full px-6 py-3 font-display text-sm tracking-[0.2em] text-white/70"
@@ -864,7 +873,7 @@ function Ending({ onReplay }: { onReplay: () => void }) {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 3, delay: 3 }}
+        transition={{ duration: isMobile ? 0.8 : 3, delay: isMobile ? 0.75 : 3 }}
         className="mt-6 text-xs tracking-[0.4em] text-white/40"
       >
         MADE WITH LOVE, BY CHINMAY, FOR TIYA
@@ -978,13 +987,13 @@ export function Experience() {
         )}
       </button>
 
-      <div className="relative z-10">
+      <div className="story-scenes relative z-10">
         {/* Scene 1: opening welcome after intro */}
         <section className="relative flex min-h-[115svh] flex-col items-center justify-center gap-8 px-5 py-24 text-center sm:min-h-screen sm:px-6 sm:py-0">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: introDone ? 1 : 0, y: introDone ? 0 : 20 }}
-            transition={{ duration: 2, delay: 0.4 }}
+            transition={{ duration: isMobile ? 0.45 : 2, delay: isMobile ? 0.05 : 0.4 }}
             className="font-display text-sm tracking-[0.4em] text-white/60"
           >
             A LITTLE WORLD, MADE FOR YOU
@@ -992,7 +1001,11 @@ export function Experience() {
           <motion.h1
             initial={{ opacity: 0, y: 30, filter: "blur(20px)" }}
             animate={{ opacity: introDone ? 1 : 0, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 2.4, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: isMobile ? 0.75 : 2.4,
+              delay: isMobile ? 0.15 : 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="font-display max-w-4xl text-5xl italic leading-tight text-glow-soft md:text-8xl"
           >
             Tonight, the sky wanted to tell you something.
@@ -1000,7 +1013,7 @@ export function Experience() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: introDone ? 0.7 : 0 }}
-            transition={{ duration: 2, delay: 2.4 }}
+            transition={{ duration: isMobile ? 0.45 : 2, delay: isMobile ? 0.7 : 2.4 }}
             className="font-hand text-2xl text-amber-100/80"
           >
             scroll gently ↓
