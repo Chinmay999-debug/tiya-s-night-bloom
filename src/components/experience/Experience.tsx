@@ -7,6 +7,7 @@ import { HandwrittenText } from "@/components/experience/HandwrittenText";
 import { Petals } from "@/components/experience/Petals";
 import { Moon } from "@/components/experience/Moon";
 import { NightMusic } from "@/lib/night-music";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 /* ----------------------- Intro ----------------------- */
 function Intro({ onDone }: { onDone: () => void }) {
@@ -151,25 +152,36 @@ const LETTER = [
 ];
 
 function LetterScene() {
+  const isMobile = useIsMobile();
+  const lineDelay = isMobile ? 0 : 0.15;
+
   return (
-    <section className="relative flex min-h-screen items-center justify-center px-6 py-40">
-      <Petals count={20} />
+    <section className="relative flex min-h-[125svh] items-center justify-center px-4 py-28 sm:min-h-screen sm:px-6 sm:py-40">
+      <Petals count={isMobile ? 10 : 20} />
       <motion.div
         initial={{ opacity: 0, y: 60, scale: 0.96 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-        className="glass-card relative z-10 w-full max-w-2xl rounded-3xl p-7 sm:p-10 md:p-16"
+        viewport={{ once: true, amount: isMobile ? 0.12 : 0.3 }}
+        transition={{ duration: isMobile ? 0.9 : 1.6, ease: [0.22, 1, 0.36, 1] }}
+        className="glass-card relative z-10 w-full max-w-2xl rounded-2xl p-6 sm:rounded-3xl sm:p-10 md:p-16"
       >
         <div className="font-display text-white/90">
           {LETTER.map((line, i) => (
             <motion.p
               key={i}
-              initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+              initial={{
+                opacity: 0,
+                y: isMobile ? 6 : 14,
+                filter: isMobile ? "blur(0px)" : "blur(6px)",
+              }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 1.2, delay: 0.15 * i, ease: "easeOut" }}
-              className={`my-3 text-lg leading-relaxed md:text-2xl ${
+              viewport={{ once: true, amount: isMobile ? 0.1 : 0.6 }}
+              transition={{
+                duration: isMobile ? 0.45 : 1.2,
+                delay: lineDelay * i,
+                ease: "easeOut",
+              }}
+              className={`my-2 text-[1.05rem] leading-8 sm:my-3 md:text-2xl md:leading-relaxed ${
                 line === "But I did." ? "text-glow-soft font-semibold text-amber-100" : ""
               }`}
             >
@@ -180,8 +192,8 @@ function LetterScene() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.6, delay: 2 }}
-            className="mt-10 flex flex-col items-end"
+            transition={{ duration: isMobile ? 0.8 : 1.6, delay: isMobile ? 0.35 : 2 }}
+            className="mt-8 flex flex-col items-end sm:mt-10"
           >
             <span className="text-sm tracking-[0.3em] text-white/50">WITH LOVE,</span>
             <span
@@ -669,6 +681,7 @@ function Butterfly() {
 /* ----------------------- Moon Scene ----------------------- */
 function MoonScene() {
   const ref = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["20%", "-20%"]);
   const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1.1]);
@@ -677,7 +690,10 @@ function MoonScene() {
       ref={ref}
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-40"
     >
-      <motion.div style={{ y, scale }} className="relative flex flex-col items-center">
+      <motion.div
+        style={isMobile ? undefined : { y, scale }}
+        className="relative flex flex-col items-center"
+      >
         <div className="scale-[0.7] sm:scale-100">
           <Moon size={360} />
         </div>
@@ -717,6 +733,7 @@ function MoonScene() {
 
 /* ----------------------- Heart Constellation Final ----------------------- */
 function HeartConstellation() {
+  const isMobile = useIsMobile();
   // heart parametric points
   const pts = useMemo(() => {
     const arr: { x: number; y: number }[] = [];
@@ -730,10 +747,21 @@ function HeartConstellation() {
     }
     return arr;
   }, []);
+  const closingLines = [
+    "If today felt heavy…",
+    "I hope this little world reminded you…",
+    "Someone wanted to make you smile.",
+    "Someone wanted you to know…",
+    "You're never just another ordinary person.",
+    "You are deeply appreciated.",
+    "You are incredibly important.",
+    "And somewhere,",
+    "Someone believes tomorrow will be kinder to you.",
+  ];
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-40">
-      <div className="relative flex flex-col items-center gap-12">
+    <section className="relative flex min-h-[120svh] items-center justify-center overflow-hidden px-4 py-28 sm:min-h-screen sm:px-6 sm:py-40">
+      <div className="relative flex flex-col items-center gap-10 sm:gap-12">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -758,7 +786,10 @@ function HeartConstellation() {
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 + i * 0.03 }}
+              transition={{
+                duration: isMobile ? 0.35 : 0.6,
+                delay: isMobile ? 0.1 + i * 0.01 : 0.4 + i * 0.03,
+              }}
               style={{ filter: "drop-shadow(0 0 2px #f87171)" }}
             />
           ))}
@@ -767,29 +798,19 @@ function HeartConstellation() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 2, delay: 1.2 }}
-          className="glass-card max-w-2xl rounded-3xl p-8 text-center font-display text-white/90 md:p-12"
+          viewport={{ once: true, amount: isMobile ? 0.12 : 0.4 }}
+          transition={{ duration: isMobile ? 0.8 : 2, delay: isMobile ? 0.15 : 1.2 }}
+          className="glass-card max-w-2xl rounded-2xl p-6 text-center font-display text-white/90 sm:rounded-3xl md:p-12"
         >
           <p className="mb-4 text-sm tracking-[0.3em] text-white/60">DEAR TIYA,</p>
-          {[
-            "If today felt heavy…",
-            "I hope this little world reminded you…",
-            "Someone wanted to make you smile.",
-            "Someone wanted you to know…",
-            "You're never just another ordinary person.",
-            "You are deeply appreciated.",
-            "You are incredibly important.",
-            "And somewhere,",
-            "Someone believes tomorrow will be kinder to you.",
-          ].map((line, i) => (
+          {closingLines.map((line, i) => (
             <motion.p
               key={i}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.2 * i }}
-              className="my-2 text-lg leading-relaxed md:text-xl"
+              transition={{ duration: isMobile ? 0.45 : 1.2, delay: isMobile ? 0 : 0.2 * i }}
+              className="my-2 text-[1.05rem] leading-8 md:text-xl md:leading-relaxed"
             >
               {line}
             </motion.p>
@@ -854,6 +875,7 @@ function Ending({ onReplay }: { onReplay: () => void }) {
 
 /* ----------------------- Root ----------------------- */
 export function Experience() {
+  const isMobile = useIsMobile();
   const [introDone, setIntroDone] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const musicRef = useRef<NightMusic | null>(null);
@@ -912,16 +934,16 @@ export function Experience() {
           }}
         />
       </div>
-      <Fireflies count={14} />
-      <CursorMagic />
+      {!isMobile && <Fireflies count={14} />}
+      {!isMobile && <CursorMagic />}
       <div className="grain z-[45]" />
       {/* Big moon in the far background */}
-      <div className="pointer-events-none fixed right-[6vw] top-[8vh] z-0 origin-top-right scale-[0.65] drift-slow opacity-90 md:scale-100">
+      <div className="pointer-events-none fixed right-[6vw] top-[8vh] z-0 hidden origin-top-right scale-[0.65] drift-slow opacity-90 sm:block md:scale-100">
         <Moon size={180} />
       </div>
       {/* Floating fog */}
       <div
-        className="pointer-events-none fixed inset-0 z-[5]"
+        className="pointer-events-none fixed inset-0 z-[5] hidden sm:block"
         style={{
           background:
             "radial-gradient(1200px 400px at 50% 100%, rgba(192,132,252,0.15), transparent 60%), radial-gradient(1000px 300px at 20% 80%, rgba(125,211,252,0.12), transparent 60%)",
@@ -958,7 +980,7 @@ export function Experience() {
 
       <div className="relative z-10">
         {/* Scene 1: opening welcome after intro */}
-        <section className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-6 text-center">
+        <section className="relative flex min-h-[115svh] flex-col items-center justify-center gap-8 px-5 py-24 text-center sm:min-h-screen sm:px-6 sm:py-0">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: introDone ? 1 : 0, y: introDone ? 0 : 20 }}

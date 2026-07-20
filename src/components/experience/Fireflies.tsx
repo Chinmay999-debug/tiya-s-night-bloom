@@ -18,6 +18,7 @@ export function Fireflies({ count = 14 }: { count?: number }) {
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
+    if (window.innerWidth < 768) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = canvas.getContext("2d")!;
     const dpr = Math.min(devicePixelRatio || 1, 2);

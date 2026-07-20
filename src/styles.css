@@ -204,14 +204,39 @@
 
 /* lighter effects on phones so scrolling stays silky */
 @media (max-width: 640px) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .glass-card {
-    -webkit-backdrop-filter: blur(14px) saturate(130%);
-    backdrop-filter: blur(14px) saturate(130%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow:
+      0 18px 44px -24px rgba(0, 0, 0, 0.72),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
   .aurora-blob {
-    width: 90vw;
-    height: 90vw;
-    filter: blur(28px);
+    display: none;
+  }
+
+  .text-glow,
+  .text-glow-soft {
+    text-shadow: 0 0 14px rgba(253, 230, 138, 0.28);
+  }
+
+  .grain {
+    opacity: 0.025;
+  }
+
+  .petal {
+    filter: none !important;
+  }
+
+  .pulse-heart,
+  .moon-glow,
+  .drift-slow {
+    animation: none !important;
   }
 }
 

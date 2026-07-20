@@ -15,7 +15,8 @@ export function StarField({
     const canvas = ref.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const isMobile = window.innerWidth < 768;
+    const dpr = isMobile ? 1 : Math.min(devicePixelRatio || 1, 2);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let w = (canvas.width = window.innerWidth * dpr);
     let h = (canvas.height = window.innerHeight * dpr);
@@ -23,7 +24,7 @@ export function StarField({
     canvas.style.height = window.innerHeight + "px";
 
     // fewer stars on small screens so phones stay smooth
-    const starCount = window.innerWidth < 768 ? Math.round(density * 0.55) : density;
+    const starCount = isMobile ? Math.round(density * 0.32) : density;
     const stars: Star[] = Array.from({ length: starCount }, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
@@ -49,7 +50,7 @@ export function StarField({
       h = canvas.height = window.innerHeight * dpr;
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
-      if (reduceMotion) drawStatic();
+      if (reduceMotion || isMobile) drawStatic();
     };
     window.addEventListener("resize", onResize);
 
@@ -119,7 +120,7 @@ export function StarField({
       raf = requestAnimationFrame(tick);
     };
 
-    if (reduceMotion) {
+    if (reduceMotion || isMobile) {
       drawStatic();
     } else {
       raf = requestAnimationFrame(tick);

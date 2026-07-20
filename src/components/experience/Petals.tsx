@@ -31,7 +31,7 @@ export function Petals({ count = 24 }: { count?: number }) {
   }, [count]);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
       {petals.map((p) => (
         <span
           key={p.id}
