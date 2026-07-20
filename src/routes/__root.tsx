@@ -76,15 +76,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "For Tiya — A little world, made with love" },
-      { name: "description", content: "A cinematic little world built just for Tiya, from Chinmay." },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { title: "For Tiya ✦ a little world, made with love" },
+      {
+        name: "description",
+        content: "A cinematic little world built just for Tiya, from Chinmay.",
+      },
       { name: "author", content: "Chinmay" },
       { property: "og:title", content: "For Tiya" },
       { property: "og:description", content: "A cinematic little world built just for you." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "theme-color", content: "#05060f" },
     ],
     links: [
       {
@@ -97,7 +100,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Caveat:wght@400;600&family=Dancing+Script:wght@500;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      {
+        rel: "icon",
+        href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E",
+        type: "image/svg+xml",
+      },
     ],
   }),
   shellComponent: RootShell,

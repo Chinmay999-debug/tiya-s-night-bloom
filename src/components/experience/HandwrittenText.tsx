@@ -5,11 +5,13 @@ export function HandwrittenText({
   className = "",
   delay = 0,
   size = "text-6xl md:text-8xl",
+  color = "#fef3c7",
 }: {
   text: string;
   className?: string;
   delay?: number;
   size?: string;
+  color?: string;
 }) {
   return (
     <motion.h2
@@ -18,7 +20,7 @@ export function HandwrittenText({
       viewport={{ once: true, amount: 0.5 }}
       transition={{ duration: 2.2, delay, ease: [0.22, 1, 0.36, 1] }}
       className={`font-script ${size} text-glow ${className}`}
-      style={{ color: "#fef3c7" }}
+      style={{ color }}
     >
       {text}
     </motion.h2>
